@@ -1,44 +1,46 @@
-var restoreValueFromCoockies = function(form) {
-    var element;
+var restoreValueFromCookies = function(form) {
+    if (docCookies.hasItem(formReviewName.name)) {
+        formReviewName.value = docCookies.getItem(formReviewName.name);
+    }
 
-    for (var i = 0; i < formReview.elements.length; i++) {
-        element = formReview.elements[i];
-
-        if (docCookies.hasItem(element.name)) {
-            element.value = docCookies.getItem(element.name);
-        }
+    if (docCookies.hasItem('review-mark')) {
+        formReview['review-mark'].value = docCookies.getItem('review-mark');
     }
 };
 
-var formReview = document.forms[1];
-var formReviewName = formReview['review-name'];
-var formReviewText = formReview['review-text'];
+var formReview = document.querySelector('.review-form');
+var formReviewName = document.querySelector('#review-name');
+var formReviewText = document.querySelector('#review-text');
 
-restoreValueFromCoockies(formReview);
 
 formReviewName.addEventListener('change', function(evt) {
-    if (formReviewName) {
-        document.all[83].innerHTML = '';
+    if (formReviewName.value) {
+        document.querySelector('.review-fields-name').hidden = true;
+    } else {
+        document.querySelector('.review-fields-name').hidden = false;
     }
 });
 
 formReviewText.addEventListener('change', function(evt) {
-    if (formReviewText) {
-        document.all[84].innerHTML = '';
+    if (formReviewText.value) {
+        document.querySelector('.review-fields-text').hidden = true;
+    } else {
+        document.querySelector('.review-fields-text').hidden = false;
     }
 });
+
+var birthDate = new Date('1989-01-08');
+var nowDate = new Date();
+var sumDay = nowDate - birthDate;
 
 formReview.addEventListener('submit', function(evt) {
     evt.preventDefault();
 
-    docCookies.setItem(formReviewName.name, formReviewName.value);
+    docCookies.setItem(formReviewName.name, formReviewName.value, nowDate + sumDay);
 
-    var element;
-    for (var i = 0; i < formReview.elements['review-mark'].length; i++) {
-        element = formReview.elements['review-mark'][i];
-
-        docCookies.setItem(element.name, element.value);
-    }
+    docCookies.setItem('review-mark', formReview['review-mark'].value, nowDate + sumDay);
 
     formReview.submit();
 });
+
+restoreValueFromCookies(formReview);
