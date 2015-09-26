@@ -67,7 +67,7 @@
 
     <fieldset class="review-form-group review-form-group-mark">
       <span class="review-form-label">Оценка</label><br>
-      <input type="radio" name="review-mark" id="review-mark-1" value="1"><label class="review-mark-label review-mark-label-1" for="review-mark-2">1</label>
+      <input type="radio" name="review-mark" id="review-mark-1" value="1"><label class="review-mark-label review-mark-label-1" for="review-mark-1">1</label>
       <input type="radio" name="review-mark" id="review-mark-2" value="2"><label class="review-mark-label review-mark-label-2" for="review-mark-2">2</label>
       <input type="radio" name="review-mark" id="review-mark-3" value="3" checked><label class="review-mark-label review-mark-label-3" for="review-mark-3">3</label>
       <input type="radio" name="review-mark" id="review-mark-4" value="4"><label class="review-mark-label review-mark-label-4" for="review-mark-4">4</label>
@@ -76,17 +76,17 @@
 
     <fieldset class="review-form-group">
       <label for="review-name" class="review-form-label">Имя</label><br>
-      <input type="text" name="review-name" id="review-name" class="review-form-field review-form-field-name">
+      <input type="text" name="review-name" id="review-name" class="review-form-field review-form-field-name" required>
     </fieldset>
 
     <fieldset class="review-form-group">
       <label for="review-text" class="review-form-label">Отзыв</label><br>
-      <textarea name="review-text" id="review-text" class="review-form-field review-form-field-text" cols="32" rows="8"></textarea>
+      <textarea name="review-text" id="review-text" class="review-form-field review-form-field-text" cols="32" rows="8" required></textarea>
     </fieldset>
 
     <div class="review-form-controls">
       <button class="review-form-control review-submit" type="submut">Добавить отзыв</button>
-      <div class="review-form-control review-fields">
+      <div class="review-form-control review-fields" id="review-fields">
         Осталось заполнить:<br>
         <label for="review-name" class="review-fields-label review-fields-name">имя</label>
         <label for="review-text" class="review-fields-label review-fields-text">отзыв</label>
@@ -108,7 +108,9 @@
   </article>
 </template>
 
+<script src="js/cookies.js"></script>
 <script src="js/form.js"></script>
+<script src="js/form-validate.js"></script>
 
 </body>
 </html>
