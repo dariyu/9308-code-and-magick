@@ -1,4 +1,4 @@
-var restoreValueFromCookies = function(form) {
+( function () {var restoreValueFromCookies = function(form) {
     if (docCookies.hasItem(formReviewName.name)) {
         formReviewName.value = docCookies.getItem(formReviewName.name);
     }
@@ -44,3 +44,5 @@ formReview.addEventListener('submit', function(evt) {
 });
 
 restoreValueFromCookies(formReview);
+}) ();
+
