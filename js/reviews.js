@@ -24,8 +24,6 @@
   var reviews;
 
   function renderReviews(reviews) {
-
-    reviewsContainer.classList.remove('reviews-load-failure');
     reviewsContainer.innerHTML = '';
 
     var reviewsTemplate = document.getElementById('review-template');
@@ -55,7 +53,6 @@
         };
       }
     });
-
     reviewsContainer.appendChild(reviewsFragment);
   }
 
@@ -74,13 +71,10 @@
 
       switch (loadedXhr.readyState) {
         case readyState.OPENED:
-        case readyState.HEADERS_RECEIVED:
-        case readyState.LOADING:
           reviewsContainer.classList.add('reviews-list-loading');
           break;
 
         case readyState.DONE:
-        default :
           if (loadedXhr.status == 200) {
             var data = loadedXhr.response;
             reviewsContainer.classList.remove('reviews-list-loading');
@@ -91,10 +85,10 @@
           if (loadedXhr.status > 400) {
             showFailure();
           }
-          break;
+        break;
+        default : break;
       }
     };
-
     xhr.ontimeout = function() {
       showFailure();
     }
@@ -114,11 +108,9 @@
           if (a.date > b.date) {
             return -1;
           }
-
           if (a.date < b.date) {
             return 1;
           }
-
           if (a.date === b.date) {
             return 0;
           }
@@ -130,17 +122,7 @@
           return obj.rating >= 3;
         });
         filteredReviews.sort(function(a, b) {
-          if (a.rating > b.rating) {
-            return -1;
-          }
-
-          if (a.rating < b.rating) {
-            return 1;
-          }
-
-          if (a.rating === b.rating) {
-            return 0;
-          }
+          return b.rating - a.rating;
         });
        break;
 
@@ -149,33 +131,13 @@
           return obj.rating <= 2;
         });
         filteredReviews.sort(function(a, b) {
-          if (a.rating > b.rating) {
-            return 1;
-          }
-
-          if (a.rating < b.rating) {
-            return -1;
-          }
-
-          if (a.rating === b.rating) {
-            return 0;
-          }
+          return a.rating - b.rating;
         });
       break;
 
       case 'reviews-popular' :
         filteredReviews = reviews.sort(function(a, b) {
-          if (a['review-rating'] > b['review-rating']) {
-            return -1;
-          }
-
-          if (a['review-rating'] < b['review-rating']) {
-            return 1;
-          }
-
-          if (a['review-rating'] === b['review-rating']) {
-            return 0;
-          }
+          return b['review-rating'] - a['review-rating'];
         });
       break;
 
@@ -184,7 +146,6 @@
         filteredReviews = reviews.slice(0);
         break;
     }
-
     return filteredReviews;
   }
 
@@ -193,7 +154,6 @@
     for (var i = 0; i < filtersElement.length; i++) {
       filtersElement[i].onclick = function(evt) {
         var clickedFilter = evt.currentTarget;
-
         setActiveFilter(clickedFilter.id);
       }
     }
@@ -205,7 +165,6 @@
   }
 
   initFilters();
-
   loadReviews(function(loadedReviews) {
     reviews = loadedReviews;
     setActiveFilter('reviews-all');
