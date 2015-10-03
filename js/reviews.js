@@ -105,15 +105,7 @@
             return reviewDate >= recentDate;
         });
         filteredReviews.sort(function(a, b) {
-          if (a.date > b.date) {
-            return -1;
-          }
-          if (a.date < b.date) {
-            return 1;
-          }
-          if (a.date === b.date) {
-            return 0;
-          }
+          return Date.parse(b.date) - Date.parse(a.date);
          });
         break;
 
