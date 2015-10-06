@@ -17,6 +17,7 @@
 
   var REQUEST_FAILURE_TIMEOUT = 10000;
   var PAGE_SIZE = 3;
+  var FILTER_ID = 'filterID';
 
   var reviewsFilter = document.querySelector('.reviews-filter');
 
@@ -28,7 +29,7 @@
   var currentReviews;
 
   function renderReviews(reviewToRender, pageNumber, replace) {
-    replace = typeof replace !== 'indefined' ? replace : true;
+    replace = replace !== undefined ? replace : true;
     pageNumber = pageNumber || 0;
 
     if (replace) {
@@ -154,7 +155,7 @@
         filteredReviews = reviews.slice(0);
         break;
     }
-    localStorage.setItem('filterID', filterID);
+    localStorage.setItem(FILTER_ID, filterID);
     return filteredReviews;
   }
 
@@ -179,17 +180,20 @@
 
   function initAddPage() {
     var addPageButton = document.querySelector('.reviews-controls-more');
-      addPageButton.addEventListener('click', function() {
-        renderReviews(currentReviews, currentPage++, false);
-      });
+        addPageButton.addEventListener('click', function() {
+          renderReviews(currentReviews, ++currentPage, false);
+          if (isNextPageAvailable(false)) {
+            addPageButton.classList.add('invisible');
+          }
+        });
   }
 
   initFilters();
-  initAddPage();
 
   loadReviews(function(loadedReviews) {
     reviews = loadedReviews;
-    setActiveFilter(localStorage.getItem('filterID') || ('reviews-all'));
+    initAddPage();
+    setActiveFilter(localStorage.getItem(FILTER_ID) || ('reviews-all'));
   });
 
   reviewsFilter.classList.remove('invisible');
