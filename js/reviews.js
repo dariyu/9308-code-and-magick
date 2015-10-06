@@ -182,7 +182,7 @@
     var addPageButton = document.querySelector('.reviews-controls-more');
         addPageButton.addEventListener('click', function() {
           renderReviews(currentReviews, ++currentPage, false);
-          if (isNextPageAvailable(false)) {
+          if (isNextPageAvailable()) {
             addPageButton.classList.add('invisible');
           }
         });
