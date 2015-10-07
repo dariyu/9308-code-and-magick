@@ -11,27 +11,25 @@
     return cloudsContainer.getBoundingClientRect().bottom > 0;
   }
 
-  function checkContainerInTheWindow() {
+  function cloudsOffset() {
     if (isContainerInTheWindow()) {
-      window.dispatchEvent(new CustomEvent('offsetClouds'));
-    } else {
-      removeScroll();
+      cloudsContainer.style.backgroundPosition = getCloudsScroll() + '%' + '0%';
+    }
+  }
+
+  function hideClouds() {
+    if (!isContainerInTheWindow()) {
+      window.dispatchEvent(new CustomEvent('stopParallax'));
     }
   }
 
   function initScroll() {
     window.addEventListener('scroll', function() {
-      checkContainerInTheWindow();
+      cloudsOffset();
     });
 
-    window.addEventListener('offsetClouds', function() {
-      cloudsContainer.style.backgroundPosition = getCloudsScroll() + '%' + '0%';
-    })
-  }
-
-  function removeScroll() {
-    window.removeEventListener('scroll', function() {
-      checkContainerInTheWindow();
+    window.addEventListener('stopParallax', function() {
+      window.removeEventListener('scroll', cloudsOffset());
     })
   }
 
