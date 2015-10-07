@@ -14,6 +14,8 @@
   function checkContainerInTheWindow() {
     if (isContainerInTheWindow()) {
       window.dispatchEvent(new CustomEvent('offsetClouds'));
+    } else {
+      removeScroll();
     }
   }
 
@@ -25,7 +27,12 @@
     window.addEventListener('offsetClouds', function() {
       cloudsContainer.style.backgroundPosition = getCloudsScroll() + '%' + '0%';
     })
+  }
 
+  function removeScroll() {
+    window.removeEventListener('scroll', function() {
+      checkContainerInTheWindow();
+    })
   }
 
   initScroll();
