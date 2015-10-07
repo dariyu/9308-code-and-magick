@@ -12,27 +12,26 @@
   }
 
   function cloudsOffset() {
-    if (isContainerInTheWindow()) {
-      cloudsContainer.style.backgroundPosition = getCloudsScroll() + '%' + '0%';
-    }
-  }
-
-  function hideClouds() {
-    if (!isContainerInTheWindow()) {
-      window.dispatchEvent(new CustomEvent('stopParallax'));
-    }
+    cloudsContainer.style.backgroundPosition = getCloudsScroll() + '%' + '0%';
   }
 
   function initScroll() {
     window.addEventListener('scroll', function() {
-      cloudsOffset();
+      if (isContainerInTheWindow()) {
+        cloudsOffset();
+      } else {
+        window.dispatchEvent(new CustomEvent('stopParallax'));
+      }
     });
+  }
 
+  function removeScrollListener() {
     window.addEventListener('stopParallax', function() {
       window.removeEventListener('scroll', cloudsOffset());
     })
   }
 
   initScroll();
+  removeScrollListener();
 
 })();
