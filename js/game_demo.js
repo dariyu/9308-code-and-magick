@@ -6,7 +6,7 @@
   var isCloudsVisible = true;
 
   function getCloudsOffset() {
-    return HORIZONTAL_COORDINATE - Math.ceil(window.scrollY/5);
+    return HORIZONTAL_COORDINATE - window.scrollY/5;
   }
 
   function isContainerInTheWindow() {
@@ -25,27 +25,27 @@
     window.dispatchEvent(new CustomEvent('startParallax'));
   }
 
-  function cloudsPositionUpdate() {
-    if (isCloudsVisible) {
-      cloudsOffset();
-    }
-  }
-
   function initScroll() {
-    var someTimeout;
-    window.addEventListener('scroll', cloudsPositionUpdate);
+    var cloudsVisibilityTimeout;
+    window.addEventListener('scroll', cloudsOffset);
 
     window.addEventListener('scroll', function cloudsVisibilityCheck() {
-      clearTimeout(someTimeout);
 
-      someTimeout = setTimeout(function() {
+      if (cloudsVisibilityTimeout) {
+        return;
+      }
+
+      cloudsVisibilityTimeout = setTimeout(function() {
+        clearTimeout(cloudsVisibilityTimeout);
+        cloudsVisibilityTimeout = null;
+
         if (isContainerInTheWindow() == isCloudsVisible) {
           return;
         }
 
         isCloudsVisible = isContainerInTheWindow();
 
-        if (isContainerInTheWindow()) {
+        if (isCloudsVisible) {
           showClouds();
         } else {
           turnCloudsParallaxOff();
@@ -56,13 +56,13 @@
 
   function stopParallaxListener() {
     window.addEventListener('stopParallax', function() {
-      window.removeEventListener('scroll', cloudsPositionUpdate);
+      window.removeEventListener('scroll', cloudsOffset);
     })
   }
 
   function startParallaxAgain() {
     window.addEventListener('startParallax', function() {
-      cloudsOffset();
+      window.addEventListener('scroll', cloudsOffset);
     })
   }
 
