@@ -3,7 +3,7 @@
   var HORIZONTAL_COORDINATE = 50;
   var cloudsContainer = document.querySelector('.header-clouds');
 
-  function getCloudsScroll() {
+  function getCloudsOffset() {
     return HORIZONTAL_COORDINATE - Math.ceil(window.scrollY/5);
   }
 
@@ -12,26 +12,57 @@
   }
 
   function cloudsOffset() {
-    cloudsContainer.style.backgroundPosition = getCloudsScroll() + '%' + '0%';
+    cloudsContainer.style.backgroundPosition = getCloudsOffset() + '%' + '0%';
+  }
+
+  function turnCloudsParallaxOff() {
+    window.dispatchEvent(new CustomEvent('stopParallax'));
+  }
+
+  function showClouds() {
+    window.dispatchEvent(new CustomEvent('startParallax'));
   }
 
   function initScroll() {
-    window.addEventListener('scroll', function() {
-      if (isContainerInTheWindow()) {
+    var someTimeout;
+    var isCloudsVisible = true;
+
+    window.addEventListener('scroll', function cloudsPositionUpdate() {
+      if (isCloudsVisible) {
         cloudsOffset();
-      } else {
-        window.dispatchEvent(new CustomEvent('stopParallax'));
       }
     });
+
+    window.addEventListener('scroll', function cloudsVisibilityCheck() {
+      clearTimeout(someTimeout);
+
+      someTimeout = setTimeout(function() {
+        if (isContainerInTheWindow() == isCloudsVisible) {
+          return;
+        }
+        if (!isContainerInTheWindow()) {
+          turnCloudsParallaxOff();
+        } else {
+          showClouds();
+        }
+      }, 100);
+    })
   }
 
-  function removeScrollListener() {
+  function stopParallaxListener() {
     window.addEventListener('stopParallax', function() {
-      window.removeEventListener('scroll', cloudsOffset());
+      window.removeEventListener('scroll', cloudsOffset);
+    })
+  }
+
+  function startParallaxAgain() {
+    window.addEventListener('startParallax', function() {
+      cloudsOffset();
     })
   }
 
   initScroll();
-  removeScrollListener();
+  stopParallaxListener();
+  startParallaxAgain();
 
 })();
