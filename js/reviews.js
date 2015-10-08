@@ -175,24 +175,24 @@
   }
 
   function isNextPageAvailable() {
-    return currentPage < Math.ceil(reviews.length / PAGE_SIZE);
+    return currentPage + 1 < Math.ceil(currentReviews.length / PAGE_SIZE);
   }
 
   function initAddPage() {
     var addPageButton = document.querySelector('.reviews-controls-more');
         addPageButton.addEventListener('click', function() {
           renderReviews(currentReviews, ++currentPage, false);
-          if (isNextPageAvailable(false)) {
+          if (!isNextPageAvailable()) {
             addPageButton.classList.add('invisible');
           }
         });
   }
 
   initFilters();
+  initAddPage();
 
   loadReviews(function(loadedReviews) {
     reviews = loadedReviews;
-    initAddPage();
     setActiveFilter(localStorage.getItem(FILTER_ID) || ('reviews-all'));
   });
 
