@@ -1,11 +1,4 @@
 (function() {
-  var ratingClass = {
-    '1' : 'review-rating-one',
-    '2' : 'review-rating-two',
-    '3' : 'review-rating-three',
-    '4' : 'review-rating-four',
-    '5' : 'review-rating-five'
-  };
 
   var readyState = {
     'UNSENT' : 0,
@@ -27,16 +20,19 @@
   var reviews;
   var currentPage = 0;
   var currentReviews;
+  var renderedReviews = [];
 
   function renderReviews(reviewToRender, pageNumber, replace) {
     replace = replace !== undefined ? replace : true;
     pageNumber = pageNumber || 0;
 
     if (replace) {
-      reviewsContainer.innerHTML = '';
+      var el;
+      while ((el = renderedReviews.shift())) {
+        el.unrender();
+      }
     }
 
-    var reviewsTemplate = document.getElementById('review-template');
     var reviewsFragment = document.createDocumentFragment();
     var reviewsFrom = pageNumber * PAGE_SIZE;
     var reviewsTo = reviewsFrom + PAGE_SIZE;
@@ -46,29 +42,11 @@
       document.querySelector('.reviews-controls-more').classList.remove('invisible');
     }
 
-    reviewToRender.forEach(function(review, i) {
-      var newReviewElement = reviewsTemplate.content.children[0].cloneNode(true);
+    reviewToRender.forEach(function(reviewData, i) {
 
-      newReviewElement.querySelector('.review-rating').classList.add(ratingClass[review.rating]);
-      newReviewElement.querySelector('.review-text').textContent = review.description;
-
-      reviewsFragment.appendChild(newReviewElement);
-
-      if (review.author.picture) {
-        var authorPicture = new Image();
-        authorPicture.src = review.author.picture;
-
-        authorPicture.addEventListener('load', function() {
-          newReviewElement.replaceChild(authorPicture, newReviewElement.childNodes[1]);
-          authorPicture.classList.add('review-author');
-          authorPicture.width = 124;
-          authorPicture.height = 124;
-        });
-
-        authorPicture.addEventListener('error', function(evt) {
-          newReviewElement.classList.add('review-load-failure');
-        });
-      }
+      var newReviewElement = new Review(reviewData);
+      newReviewElement.render(reviewsFragment);
+      renderedReviews.push(newReviewElement);
     });
     reviewsContainer.appendChild(reviewsFragment);
   }
