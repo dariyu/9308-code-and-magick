@@ -8,6 +8,10 @@
     'ESC' : 27
   };
 
+  function clamp(value, min, max) {
+    return Math.min(Math.max(value, min), max);
+  }
+
   var galleryContainer = document.querySelector('.photogallery');
 
   var Gallery = function() {
@@ -16,6 +20,8 @@
     this._leftButton = document.querySelector('.overlay-gallery-control-left');
     this._rightButton = document.querySelector('.overlay-gallery-control-right');
     this._pictureElement = this._element.querySelector('.overlay-gallery-preview');
+    this._numberCurrent = this._element.querySelector('.preview-number-current');
+    this._numberTotal = this._element.querySelector('.preview-number-total');
 
     this._photos = [];
     this._currentPhoto = 0;
@@ -26,14 +32,14 @@
     this._onDocumentKeyDown = this._onDocumentKeyDown.bind(this);
   };
 
-  Gallery.prototype.show = function() {
+  Gallery.prototype.show = function(src) {
     this._element.classList.remove('invisible');
     this._closeButton.addEventListener('click', this._onCloseButtonClick);
     this._leftButton.addEventListener('click', this._onLeftArrowClick);
     this._rightButton.addEventListener('click', this._onRightArrowClick);
     document.body.addEventListener('keydown', this._onDocumentKeyDown);
 
-    this.setCurrentPhoto();
+    this.setCurrentPhoto(this._photos.indexOf(src));
   };
 
   Gallery.prototype.hide = function () {
@@ -85,23 +91,30 @@
   };
 
   Gallery.prototype.setCurrentPhoto = function(index) {
+    index = clamp(index, 0, this._photos.length - 1);
+
+    this._currentPhoto = index;
+
+    var previewNumberContainer = this._pictureElement.children[0].cloneNode(true);
+    this._numberCurrent.textContent = this._currentPhoto + 1;
+    this._numberTotal.textContent = this._photos.length;
 
     var imageElement = new Image();
     imageElement.src = this._photos[this._currentPhoto];
     imageElement.onload = function() {
+      this._pictureElement.appendChild(previewNumberContainer);
       this._pictureElement.appendChild(imageElement);
     }.bind(this);
-
-    this._currentPhoto = index;
 
     this._pictureElement.innerHTML = '';
   };
 
   galleryContainer.addEventListener('click', function(evt) {
     if (evt.target.parentNode.classList.contains('photogallery-image')) {
+      var currentImage = evt.target.src;
       var gallery = new Gallery();
       gallery.setPhotos();
-      gallery.show();
+      gallery.show(currentImage);
     }
   });
 
