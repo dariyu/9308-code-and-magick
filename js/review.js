@@ -14,7 +14,7 @@
 
   var Review = function(data) {
      this._data = data;
-     this.element_ = null;
+     this._element = null;
    };
 
   Review.prototype.render = function(container) {
@@ -41,12 +41,12 @@
 
     container.appendChild(newReviewElement);
 
-    this.element_ = newReviewElement;
+    this._element = newReviewElement;
   };
 
   Review.prototype.unrender = function() {
-    this.element_.parentNode.removeChild(this.element_);
-    this.element_ = null;
+    this._element.parentNode.removeChild(this._element);
+    this._element = null;
   };
 
   window.Review = Review;
