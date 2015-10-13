@@ -20,8 +20,6 @@
     this._leftButton = document.querySelector('.overlay-gallery-control-left');
     this._rightButton = document.querySelector('.overlay-gallery-control-right');
     this._pictureElement = this._element.querySelector('.overlay-gallery-preview');
-    this._numberCurrent = this._element.querySelector('.preview-number-current');
-    this._numberTotal = this._element.querySelector('.preview-number-total');
 
     this._photos = [];
     this._currentPhoto = 0;
@@ -96,8 +94,13 @@
     this._currentPhoto = index;
 
     var previewNumberContainer = this._pictureElement.children[0].cloneNode(true);
-    this._numberCurrent.textContent = this._currentPhoto + 1;
-    this._numberTotal.textContent = this._photos.length;
+    var numberCurrent = previewNumberContainer.querySelector('.preview-number-current');
+    var numberTotal = previewNumberContainer.querySelector('.preview-number-total');
+
+    numberCurrent.textContent = this._currentPhoto + 1;
+    numberTotal.textContent = this._photos.length;
+
+    this._pictureElement.innerHTML = '';
 
     var imageElement = new Image();
     imageElement.src = this._photos[this._currentPhoto];
@@ -106,7 +109,6 @@
       this._pictureElement.appendChild(imageElement);
     }.bind(this);
 
-    this._pictureElement.innerHTML = '';
   };
 
   galleryContainer.addEventListener('click', function(evt) {
