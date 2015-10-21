@@ -1,4 +1,4 @@
-/* global Gallery: true */
+/* global GalleryPicture: true */
 
 (function() {
 
@@ -15,13 +15,14 @@
   var galleryContainer = document.querySelector('.photogallery');
 
   var Gallery = function() {
+    this._photos = new Backbone.Collection();
+
     this._element = document.querySelector('.overlay-gallery');
     this._closeButton = document.querySelector('.overlay-gallery-close');
     this._leftButton = document.querySelector('.overlay-gallery-control-left');
     this._rightButton = document.querySelector('.overlay-gallery-control-right');
     this._pictureElement = this._element.querySelector('.overlay-gallery-preview');
 
-    this._photos = [];
     this._currentPhoto = 0;
 
     this._onCloseButtonClick = this._onCloseButtonClick.bind(this);
@@ -47,16 +48,22 @@
     this._rightButton.removeEventListener('click', this._onRightArrowClick);
     document.body.removeEventListener('keyDown', this._onDocumentKeyDown);
 
-    this._photos = [];
+    this._photos.reset();
     this._currentPhoto = 0;
   };
 
   Gallery.prototype.setPhotos = function() {
     var images = document.querySelectorAll('.photogallery-image img');
-
+    var image = [];
     for (var i = 0; i < images.length; i++) {
-      this._photos.push(images[i].src);
+      image.push(images[i].src);
     }
+
+    this._photos.reset(image.map(function(photoSrc) {
+      return new Backbone.Model({
+        url: photoSrc
+      });
+    }));
   };
 
   Gallery.prototype._onCloseButtonClick = function(evt) {
@@ -102,17 +109,16 @@
 
     this._pictureElement.innerHTML = '';
 
-    var imageElement = new Image();
-    imageElement.src = this._photos[this._currentPhoto];
-    imageElement.onload = function() {
-      this._pictureElement.appendChild(previewNumberContainer);
-      this._pictureElement.appendChild(imageElement);
-    }.bind(this);
+    var imageElement = new GalleryPicture({ model: this._photos.at(this._currentPhoto) });
+    imageElement.render();
+    this._pictureElement.appendChild(previewNumberContainer);
+    this._pictureElement.appendChild(imageElement.el);
 
   };
 
   galleryContainer.addEventListener('click', function(evt) {
     if (evt.target.parentNode.classList.contains('photogallery-image')) {
+      evt.preventDefault();
       var currentImage = evt.target.src;
       var gallery = new Gallery();
       gallery.setPhotos();
