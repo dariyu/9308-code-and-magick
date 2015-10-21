@@ -1,13 +1,15 @@
-/* global Backbone: true ReviewModel: true */
+/* global Backbone: true */
+
+'use strict';
 
 (function() {
 
   var ratingClass = {
-    '1' : 'review-rating-one',
-    '2' : 'review-rating-two',
-    '3' : 'review-rating-three',
-    '4' : 'review-rating-four',
-    '5' : 'review-rating-five'
+    '1': 'review-rating-one',
+    '2': 'review-rating-two',
+    '3': 'review-rating-three',
+    '4': 'review-rating-four',
+    '5': 'review-rating-five'
   };
 
   var reviewsTemplate = document.getElementById('review-template');
@@ -17,7 +19,6 @@
     initialize: function() {
       this._onImageLoad = this._onImageLoad.bind(this);
       this._onImageFail = this._onImageFail.bind(this);
-      //this._onReviewUseful = this._onReviewUseful.bind(this);
       this._onClick = this._onClick.bind(this);
     },
 
@@ -34,8 +35,6 @@
 
       this.el.querySelector('.review-rating').classList.add(ratingClass[this.model.get('rating')]);
       this.el.querySelector('.review-text').textContent = this.model.get('description');
-      this.el.querySelector('.review-text').textContent = this.model.get('description');
-
 
       if (this.model.get('author').picture) {
         var authorPicture = this.el.querySelector('.review-author');
@@ -44,17 +43,16 @@
         authorPicture.addEventListener('load', this._onImageLoad);
         authorPicture.addEventListener('error', this._onImageFail);
         authorPicture.addEventListener('abort', this._onImageFail);
-
-        }
+      }
     },
 
     _onClick: function(evt) {
       var goodReview = this.el.querySelector('span.review-quiz-answer:first-child');
       var badReview = this.el.querySelector('span.review-quiz-answer:last-child');
-      if(evt.target == goodReview){
+      if (evt.target === goodReview) {
         this.model.helpful();
       }
-      if(evt.target == badReview){
+      if (evt.target === badReview) {
         this.model.unHelpful();
       }
     },

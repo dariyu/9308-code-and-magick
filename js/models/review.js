@@ -1,4 +1,6 @@
-/* global Backbone: true ReviewCollection: true */
+/* global Backbone: true */
+
+'use strict';
 
 (function() {
 
@@ -13,7 +15,7 @@
     },
 
     unHelpful: function() {
-      this.set('isHelpful', true);
+      this.set('isHelpful', false);
     }
 
   });

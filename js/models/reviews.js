@@ -1,5 +1,7 @@
 /* global Backbone: true ReviewModel: true */
 
+'use strict';
+
 (function() {
 
   var ReviewCollection = Backbone.Collection.extend({

@@ -1,11 +1,13 @@
-/* global GalleryPicture: true */
+/* global GalleryPicture: true _: true */
+
+'use strict';
 
 (function() {
 
   var key = {
-    'LEFT' : 37,
-    'RIGHT' : 39,
-    'ESC' : 27
+    'LEFT': 37,
+    'RIGHT': 39,
+    'ESC': 27
   };
 
   function clamp(value, min, max) {
@@ -38,10 +40,12 @@
     this._rightButton.addEventListener('click', this._onRightArrowClick);
     document.body.addEventListener('keydown', this._onDocumentKeyDown);
 
-    this.setCurrentPhoto(this._photos.indexOf(src));
+    this.setCurrentPhoto(_.findIndex(this._photos.models, function(photos) {
+      return photos.get('url') === src;
+    }));
   };
 
-  Gallery.prototype.hide = function () {
+  Gallery.prototype.hide = function() {
     this._element.classList.add('invisible');
     this._closeButton.removeEventListener('click', this._onCloseButtonClick);
     this._leftButton.removeEventListener('click', this._onLeftArrowClick);
@@ -53,13 +57,13 @@
   };
 
   Gallery.prototype.setPhotos = function() {
-    var images = document.querySelectorAll('.photogallery-image img');
-    var image = [];
-    for (var i = 0; i < images.length; i++) {
-      image.push(images[i].src);
+    var imagesNodes = document.querySelectorAll('.photogallery-image img');
+    var imageUrls = [];
+    for (var i = 0; i < imagesNodes.length; i++) {
+      imageUrls.push(imagesNodes[i].src);
     }
 
-    this._photos.reset(image.map(function(photoSrc) {
+    this._photos.reset(imageUrls.map(function(photoSrc) {
       return new Backbone.Model({
         url: photoSrc
       });

@@ -1,3 +1,7 @@
+/* global ReviewCollection: true ReviewView: true */
+
+'use strict';
+
 (function() {
 
   var REQUEST_FAILURE_TIMEOUT = 10000;
@@ -9,7 +13,6 @@
   reviewsFilter.classList.add('invisible');
 
   var reviewsContainer = document.querySelector('.reviews-list');
-  var reviews;
   var currentPage = 0;
   var renderedReviews = [];
 
@@ -35,7 +38,7 @@
     }
 
     reviewCollection.slice(reviewsFrom, reviewsTo).forEach(function(model) {
-      var view = new ReviewView( { model : model } );
+      var view = new ReviewView( { model: model } );
 
       view.render();
       reviewsFragment.appendChild(view.el);
@@ -54,13 +57,13 @@
     switch (filterID) {
       case 'reviews-recent':
         filteredReviews = initiallyLoaded.filter(function(obj) {
-            var reviewDate = new Date(obj.date);
-            var recentDate = new Date('2015-04-02');
-            return reviewDate >= recentDate;
+          var reviewDate = new Date(obj.date);
+          var recentDate = new Date('2015-04-02');
+          return reviewDate >= recentDate;
         });
         filteredReviews.sort(function(a, b) {
           return Date.parse(b.date) - Date.parse(a.date);
-         });
+        });
         break;
 
       case 'reviews-good' :
@@ -70,7 +73,7 @@
         filteredReviews.sort(function(a, b) {
           return b.rating - a.rating;
         });
-       break;
+        break;
 
       case 'reviews-bad' :
         filteredReviews = initiallyLoaded.filter(function(obj) {
@@ -79,13 +82,13 @@
         filteredReviews.sort(function(a, b) {
           return a.rating - b.rating;
         });
-      break;
+        break;
 
       case 'reviews-popular' :
         filteredReviews.sort(function(a, b) {
           return b['review-rating'] - a['review-rating'];
         });
-      break;
+        break;
 
       case 'reviews-all':
       default :
@@ -118,12 +121,12 @@
 
   function initAddPage() {
     var addPageButton = document.querySelector('.reviews-controls-more');
-        addPageButton.addEventListener('click', function() {
-          renderReviews(++currentPage, false);
-          if (!isNextPageAvailable()) {
-            addPageButton.classList.add('invisible');
-          }
-        });
+    addPageButton.addEventListener('click', function() {
+      renderReviews(++currentPage, false);
+      if (!isNextPageAvailable()) {
+        addPageButton.classList.add('invisible');
+      }
+    });
   }
 
   reviewCollection.fetch( { timeout: REQUEST_FAILURE_TIMEOUT }).success(function(loaded, state, jqXHR) {

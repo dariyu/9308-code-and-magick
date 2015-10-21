@@ -1,3 +1,5 @@
+'use strict';
+
 (function() {
 
   var HORIZONTAL_COORDINATE = 50;
@@ -6,7 +8,7 @@
   var isCloudsVisible = true;
 
   function getCloudsOffset() {
-    return HORIZONTAL_COORDINATE - window.scrollY/5;
+    return HORIZONTAL_COORDINATE - window.scrollY / 5;
   }
 
   function isContainerInTheWindow() {
@@ -39,7 +41,7 @@
         clearTimeout(cloudsVisibilityTimeout);
         cloudsVisibilityTimeout = null;
 
-        if (isContainerInTheWindow() == isCloudsVisible) {
+        if (isContainerInTheWindow() === isCloudsVisible) {
           return;
         }
 
@@ -51,19 +53,19 @@
           turnCloudsParallaxOff();
         }
       }, 100);
-    })
+    });
   }
 
   function stopParallaxListener() {
     window.addEventListener('stopParallax', function() {
       window.removeEventListener('scroll', cloudsOffset);
-    })
+    });
   }
 
   function startParallaxAgain() {
     window.addEventListener('startParallax', function() {
       window.addEventListener('scroll', cloudsOffset);
-    })
+    });
   }
 
   initScroll();
