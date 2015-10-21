@@ -1,4 +1,4 @@
-/* global GalleryPicture: true _: true */
+/* global GalleryPicture: true */
 
 'use strict';
 
@@ -40,9 +40,7 @@
     this._rightButton.addEventListener('click', this._onRightArrowClick);
     document.body.addEventListener('keydown', this._onDocumentKeyDown);
 
-    this.setCurrentPhoto(_.findIndex(this._photos.models, function(photos) {
-      return photos.get('url') === src;
-    }));
+    this.setCurrentPhoto(this._photos.indexOf(this._photos.findWhere({url: src})));
   };
 
   Gallery.prototype.hide = function() {
@@ -50,7 +48,7 @@
     this._closeButton.removeEventListener('click', this._onCloseButtonClick);
     this._leftButton.removeEventListener('click', this._onLeftArrowClick);
     this._rightButton.removeEventListener('click', this._onRightArrowClick);
-    document.body.removeEventListener('keyDown', this._onDocumentKeyDown);
+    document.body.removeEventListener('keydown', this._onDocumentKeyDown);
 
     this._photos.reset();
     this._currentPhoto = 0;
