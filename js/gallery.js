@@ -3,19 +3,40 @@
 'use strict';
 
 (function() {
-
+  /**
+   * Список кодов клавиш для обработки
+   * клавиатурных событий
+   * @enum {number}
+   */
   var key = {
     'LEFT': 37,
     'RIGHT': 39,
     'ESC': 27
   };
 
+  /**
+   * Возвращает значение не меньше min и не больше max
+   * @param value
+   * @param min
+   * @param max
+   * @return {number}
+   */
   function clamp(value, min, max) {
     return Math.min(Math.max(value, min), max);
   }
 
+  /**
+   * Контейнер галереи
+   * @type {Element}
+   */
   var galleryContainer = document.querySelector('.photogallery');
 
+  /**
+   * Конструктор галереи на основе коллекции Backbone. Создает свойства,
+   * хранящие ссылки на элементы галереи, фиксирует контекст у обработчиков
+   * событий
+   * @constructor
+   */
   var Gallery = function() {
     this._photos = new Backbone.Collection();
 
@@ -33,6 +54,11 @@
     this._onDocumentKeyDown = this._onDocumentKeyDown.bind(this);
   };
 
+  /**
+   * Показывает галерею, вешает на кнопки и окно обработчики событий,
+   * показывает фотографию в соответствии с target.src
+   * @param {string} src
+   */
   Gallery.prototype.show = function(src) {
     this._element.classList.remove('invisible');
     this._closeButton.addEventListener('click', this._onCloseButtonClick);
@@ -43,6 +69,9 @@
     this.setCurrentPhoto(this._photos.indexOf(this._photos.findWhere({url: src})));
   };
 
+  /**
+   * Скрывает галерею, удаляет обработчики событий, очищает свойства
+   */
   Gallery.prototype.hide = function() {
     this._element.classList.add('invisible');
     this._closeButton.removeEventListener('click', this._onCloseButtonClick);
@@ -54,6 +83,11 @@
     this._currentPhoto = 0;
   };
 
+  /**
+   * Перебирает коллекцию фотографий и записывает в массив их src
+   * Создает модель и заполняет ее src из этого массива
+   * Заполняет коллекцию
+   */
   Gallery.prototype.setPhotos = function() {
     var imagesNodes = document.querySelectorAll('.photogallery-image img');
     var imageUrls = [];
@@ -68,21 +102,42 @@
     }));
   };
 
+  /**
+   * Обработчик события клика по крестику, вызывает метод hide
+   * @param {Event} evt
+   * @private
+   */
   Gallery.prototype._onCloseButtonClick = function(evt) {
     evt.preventDefault();
     this.hide();
   };
 
+  /**
+   * Обработчик события клика по стрелке влево
+   * @param {Event} evt
+   * @private
+   */
   Gallery.prototype._onLeftArrowClick = function(evt) {
     evt.preventDefault();
     this.setCurrentPhoto(this._currentPhoto - 1);
   };
 
+  /**
+   * Обработчик события клика по стрелке вправо
+   * @param {Event} evt
+   * @private
+   */
   Gallery.prototype._onRightArrowClick = function(evt) {
     evt.preventDefault();
     this.setCurrentPhoto(this._currentPhoto + 1);
   };
 
+  /**
+   * Обработчик клавиатурных событий: переключает фотографии при
+   * нажатии на стрелки и закрывает галерею при нажатии ESC
+   * @param {Event} evt
+   * @private
+   */
   Gallery.prototype._onDocumentKeyDown = function(evt) {
     switch (evt.keyCode) {
       case key.LEFT :
@@ -97,6 +152,11 @@
     }
   };
 
+  /**
+   * Устанавливает номер текущей фотографии. Отрисовывает галерею в соответствии
+   * с индексом фотографии
+   * @param {number} index
+   */
   Gallery.prototype.setCurrentPhoto = function(index) {
     index = clamp(index, 0, this._photos.length - 1);
 
@@ -118,6 +178,11 @@
 
   };
 
+  /**
+   * Обработчик события клика по фотографии в галерее.
+   * Создает галерею, заполняет ее фотографиями и вызывает метод show,
+   * передав в него src фотографии, по котороый был совершен клик
+   */
   galleryContainer.addEventListener('click', function(evt) {
     if (evt.target.parentNode.classList.contains('photogallery-image')) {
       evt.preventDefault();

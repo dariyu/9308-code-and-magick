@@ -4,6 +4,10 @@
 
 (function() {
 
+  /**
+   * Список констант классов для рейтингов
+   * @enum {string}
+   */
   var ratingClass = {
     '1': 'review-rating-one',
     '2': 'review-rating-two',
@@ -12,8 +16,14 @@
     '5': 'review-rating-five'
   };
 
+  /**
+   * @type {Element}
+   */
   var reviewsTemplate = document.getElementById('review-template');
 
+  /**
+   * Представление отзыва
+   */
   var ReviewView = Backbone.View.extend({
 
     initialize: function() {
@@ -30,6 +40,9 @@
 
     className: 'review',
 
+    /**
+     * Отрисовка отзыва
+     */
     render: function() {
       this.el.appendChild(reviewsTemplate.content.children[0].cloneNode(true));
 
@@ -46,6 +59,12 @@
       }
     },
 
+    /**
+     * Обработчик события клика по "Да" или "Нет", вызывающего
+     * изменение модели
+     * @param {Event} evt
+     * @private
+     */
     _onClick: function(evt) {
       var goodReview = this.el.querySelector('span.review-quiz-answer:first-child');
       var badReview = this.el.querySelector('span.review-quiz-answer:last-child');
@@ -57,6 +76,11 @@
       }
     },
 
+    /**
+     * Обработчик события загрузки фотографии автора отзыва
+     * @param {Event} evt
+     * @private
+     */
     _onImageLoad: function(evt) {
       var loadedImage = evt.path[0];
       this._cleanupImageListeners(loadedImage);
@@ -65,6 +89,13 @@
       loadedImage.height = 124;
     },
 
+    /**
+     * Обработчик события возникновения ошибки при загрузке
+     * фотографии автора - добавление соответствующего класса
+     * контейнеру
+     * @param {Event} evt
+     * @private
+     */
     _onImageFail: function(evt) {
       var failedImage = evt.path[0];
       this._cleanupImageListeners(failedImage);
@@ -72,6 +103,11 @@
       this.el.classList.add('review-load-failure');
     },
 
+    /**
+     * Удаление обработчиков события с загрузкой фотографии
+     * @param {Event} evt
+     * @private
+     */
     _cleanupImageListeners: function(image) {
       image.removeEventListener('load', this._onImageLoad);
       image.removeEventListener('error', this._onImageFail);

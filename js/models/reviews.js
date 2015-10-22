@@ -4,6 +4,10 @@
 
 (function() {
 
+  /**
+   * Коллекция отзывов, наследуемая от Backbone.Collection и
+   * принимающая ReviewModel и url файла с отзывами
+   */
   var ReviewCollection = Backbone.Collection.extend({
 
     model: ReviewModel,

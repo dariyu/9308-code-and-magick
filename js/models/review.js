@@ -4,6 +4,9 @@
 
 (function() {
 
+  /**
+   * Модель отзыва, наследуемая от Backbone.Model
+   */
   var ReviewModel = Backbone.Model.extend({
 
     initialize: function() {

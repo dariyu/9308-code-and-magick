@@ -2,6 +2,10 @@
 
 (function() {
 
+  /**
+   * Представление фотографии в галерее, наследуемая
+   * от Backbone.View
+   */
   var GalleryPicture = Backbone.View.extend({
 
     tagName: 'img',
