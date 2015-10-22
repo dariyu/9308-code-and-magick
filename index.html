@@ -4,16 +4,12 @@
   <meta charset="utf-8">
   <link href='https://fonts.googleapis.com/css?family=PT+Mono&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="css/main.css" media="screen" title="no title" charset="utf-8">
-  <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
-  <script type="text/javascript" src="http://underscorejs.org/underscore-min.js"></script>
-  <script type="text/javascript" src="http://backbonejs.org/backbone-min.js"></script>
   <title>Code and Magick</title>
 </head>
 <body>
 
 <header>
   <div class="header-clouds"></div>
-  <div class="header-wizard"></div>
   <div class="header-fence"></div>
   <div class="header-tree"></div>
 
@@ -35,7 +31,7 @@
     <a href="#" class="photogallery-image"><img src="img/screenshots/3.png" width="292" /></a>
     <a href="#" class="photogallery-image"><img src="img/screenshots/4.png" height="271" /></a>
     <a href="#" class="photogallery-image"><img src="img/screenshots/5.png" height="271" /></a>
-    <a href="#" class="photogallery-image"><img src="img/screenshots/6.png" width="292" /></a>
+    <a href="#" class="photogallery-image" data-replacement-video="img/screenshots/cm-sample.mp4"><img src="img/screenshots/6.png" width="292" /></a>
   </section>
 
   <section class="main-section reviews">
@@ -79,12 +75,12 @@
 
     <fieldset class="review-form-group">
       <label for="review-name" class="review-form-label">Имя</label><br>
-      <input type="text" name="review-name" id="review-name" class="review-form-field review-form-field-name" required>
+      <input type="text" name="review-name" id="review-name" class="review-form-field review-form-field-name">
     </fieldset>
 
     <fieldset class="review-form-group">
       <label for="review-text" class="review-form-label">Отзыв</label><br>
-      <textarea name="review-text" id="review-text" class="review-form-field review-form-field-text" cols="32" rows="8" required></textarea>
+      <textarea name="review-text" id="review-text" class="review-form-field review-form-field-text" cols="32" rows="8"></textarea>
     </fieldset>
 
     <div class="review-form-controls">
@@ -111,7 +107,7 @@
 
 
 <template id="review-template">
-  <div>
+  <article class="review">
     <img src="" class="review-author" alt="" title="" />
     <span class="review-rating"></span>
     <p class="review-text"></p>
@@ -120,19 +116,11 @@
       <span class="review-quiz-answer">Да</span>
       <span class="review-quiz-answer">Нет</span>
     </div>
-  </div>
+  </article>
 </template>
 
-<script src="lib/cookies.js"></script>
 <script src="js/form.js"></script>
-<script src="js/form-validate.js"></script>
-<script src="js/models/review.js"></script>
-<script src="js/models/reviews.js"></script>
-<script src="js/views/review.js"></script>
-<script src="js/reviews.js"></script>
-<script src="js/game_demo.js"></script>
-<script src="js/views/photo.js"></script>
-<script src="js/gallery.js"></script>
+<script src="js/game.js"></script>
 
 </body>
 </html>
