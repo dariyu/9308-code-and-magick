@@ -1,11 +1,13 @@
-/* global Gallery: true */
+/* global GalleryPicture: true */
+
+'use strict';
 
 (function() {
 
   var key = {
-    'LEFT' : 37,
-    'RIGHT' : 39,
-    'ESC' : 27
+    'LEFT': 37,
+    'RIGHT': 39,
+    'ESC': 27
   };
 
   function clamp(value, min, max) {
@@ -15,13 +17,14 @@
   var galleryContainer = document.querySelector('.photogallery');
 
   var Gallery = function() {
+    this._photos = new Backbone.Collection();
+
     this._element = document.querySelector('.overlay-gallery');
     this._closeButton = document.querySelector('.overlay-gallery-close');
     this._leftButton = document.querySelector('.overlay-gallery-control-left');
     this._rightButton = document.querySelector('.overlay-gallery-control-right');
     this._pictureElement = this._element.querySelector('.overlay-gallery-preview');
 
-    this._photos = [];
     this._currentPhoto = 0;
 
     this._onCloseButtonClick = this._onCloseButtonClick.bind(this);
@@ -37,26 +40,32 @@
     this._rightButton.addEventListener('click', this._onRightArrowClick);
     document.body.addEventListener('keydown', this._onDocumentKeyDown);
 
-    this.setCurrentPhoto(this._photos.indexOf(src));
+    this.setCurrentPhoto(this._photos.indexOf(this._photos.findWhere({url: src})));
   };
 
-  Gallery.prototype.hide = function () {
+  Gallery.prototype.hide = function() {
     this._element.classList.add('invisible');
     this._closeButton.removeEventListener('click', this._onCloseButtonClick);
     this._leftButton.removeEventListener('click', this._onLeftArrowClick);
     this._rightButton.removeEventListener('click', this._onRightArrowClick);
-    document.body.removeEventListener('keyDown', this._onDocumentKeyDown);
+    document.body.removeEventListener('keydown', this._onDocumentKeyDown);
 
-    this._photos = [];
+    this._photos.reset();
     this._currentPhoto = 0;
   };
 
   Gallery.prototype.setPhotos = function() {
-    var images = document.querySelectorAll('.photogallery-image img');
-
-    for (var i = 0; i < images.length; i++) {
-      this._photos.push(images[i].src);
+    var imagesNodes = document.querySelectorAll('.photogallery-image img');
+    var imageUrls = [];
+    for (var i = 0; i < imagesNodes.length; i++) {
+      imageUrls.push(imagesNodes[i].src);
     }
+
+    this._photos.reset(imageUrls.map(function(photoSrc) {
+      return new Backbone.Model({
+        url: photoSrc
+      });
+    }));
   };
 
   Gallery.prototype._onCloseButtonClick = function(evt) {
@@ -102,17 +111,16 @@
 
     this._pictureElement.innerHTML = '';
 
-    var imageElement = new Image();
-    imageElement.src = this._photos[this._currentPhoto];
-    imageElement.onload = function() {
-      this._pictureElement.appendChild(previewNumberContainer);
-      this._pictureElement.appendChild(imageElement);
-    }.bind(this);
+    var imageElement = new GalleryPicture({ model: this._photos.at(this._currentPhoto) });
+    imageElement.render();
+    this._pictureElement.appendChild(previewNumberContainer);
+    this._pictureElement.appendChild(imageElement.el);
 
   };
 
   galleryContainer.addEventListener('click', function(evt) {
     if (evt.target.parentNode.classList.contains('photogallery-image')) {
+      evt.preventDefault();
       var currentImage = evt.target.src;
       var gallery = new Gallery();
       gallery.setPhotos();

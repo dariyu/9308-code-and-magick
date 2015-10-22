@@ -1,39 +1,41 @@
-( function () {var restoreValueFromCookies = function(form) {
+'use strict';
+
+(function() {
+  var restoreValueFromCookies = function() {
     if (docCookies.hasItem(formReviewName.name)) {
-        formReviewName.value = docCookies.getItem(formReviewName.name);
+      formReviewName.value = docCookies.getItem(formReviewName.name);
     }
 
     if (docCookies.hasItem('review-mark')) {
-        formReview['review-mark'].value = docCookies.getItem('review-mark');
+      formReview['review-mark'].value = docCookies.getItem('review-mark');
     }
-};
+  };
 
-var formReview = document.querySelector('.review-form');
-var formReviewName = document.querySelector('#review-name');
-var formReviewText = document.querySelector('#review-text');
+  var formReview = document.querySelector('.review-form');
+  var formReviewName = document.querySelector('#review-name');
+  var formReviewText = document.querySelector('#review-text');
 
-
-formReviewName.addEventListener('change', function(evt) {
+  formReviewName.addEventListener('change', function() {
     if (formReviewName.value) {
-        document.querySelector('.review-fields-name').hidden = true;
+      document.querySelector('.review-fields-name').hidden = true;
     } else {
-        document.querySelector('.review-fields-name').hidden = false;
+      document.querySelector('.review-fields-name').hidden = false;
     }
-});
+  });
 
-formReviewText.addEventListener('change', function(evt) {
+  formReviewText.addEventListener('change', function() {
     if (formReviewText.value) {
-        document.querySelector('.review-fields-text').hidden = true;
+      document.querySelector('.review-fields-text').hidden = true;
     } else {
-        document.querySelector('.review-fields-text').hidden = false;
+      document.querySelector('.review-fields-text').hidden = false;
     }
-});
+  });
 
-var birthDate = new Date('1989-01-08');
-var nowDate = new Date();
-var sumDay = nowDate - birthDate;
+  var birthDate = new Date('1989-01-08');
+  var nowDate = new Date();
+  var sumDay = nowDate - birthDate;
 
-formReview.addEventListener('submit', function(evt) {
+  formReview.addEventListener('submit', function(evt) {
     evt.preventDefault();
 
     docCookies.setItem(formReviewName.name, formReviewName.value, nowDate + sumDay);
@@ -41,8 +43,8 @@ formReview.addEventListener('submit', function(evt) {
     docCookies.setItem('review-mark', formReview['review-mark'].value, nowDate + sumDay);
 
     formReview.submit();
-});
+  });
 
-restoreValueFromCookies(formReview);
-}) ();
+  restoreValueFromCookies(formReview);
+})();
 
