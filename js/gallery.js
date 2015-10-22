@@ -8,7 +8,7 @@
    * клавиатурных событий
    * @enum {number}
    */
-  var key = {
+  var Key = {
     'LEFT': 37,
     'RIGHT': 39,
     'ESC': 27
@@ -16,9 +16,9 @@
 
   /**
    * Возвращает значение не меньше min и не больше max
-   * @param value
-   * @param min
-   * @param max
+   * @param value - значение индекса
+   * @param min - минимальное принимаемое значение
+   * @param max - максимальное принимаемое значение
    * @return {number}
    */
   function clamp(value, min, max) {
@@ -57,7 +57,7 @@
   /**
    * Показывает галерею, вешает на кнопки и окно обработчики событий,
    * показывает фотографию в соответствии с target.src
-   * @param {string} src
+   * @param {string} src - ссылка фотографии, по которой был произведен клик
    */
   Gallery.prototype.show = function(src) {
     this._element.classList.remove('invisible');
@@ -104,7 +104,7 @@
 
   /**
    * Обработчик события клика по крестику, вызывает метод hide
-   * @param {Event} evt
+   * @param {Event} evt - событие клика по крестику
    * @private
    */
   Gallery.prototype._onCloseButtonClick = function(evt) {
@@ -114,7 +114,7 @@
 
   /**
    * Обработчик события клика по стрелке влево
-   * @param {Event} evt
+   * @param {Event} evt - событие клика по стрелке влево
    * @private
    */
   Gallery.prototype._onLeftArrowClick = function(evt) {
@@ -124,7 +124,7 @@
 
   /**
    * Обработчик события клика по стрелке вправо
-   * @param {Event} evt
+   * @param {Event} evt - событие клика по стрелке вправо
    * @private
    */
   Gallery.prototype._onRightArrowClick = function(evt) {
@@ -135,18 +135,18 @@
   /**
    * Обработчик клавиатурных событий: переключает фотографии при
    * нажатии на стрелки и закрывает галерею при нажатии ESC
-   * @param {Event} evt
+   * @param {Event} evt - клавиатурное событие
    * @private
    */
   Gallery.prototype._onDocumentKeyDown = function(evt) {
     switch (evt.keyCode) {
-      case key.LEFT :
+      case Key.LEFT :
         this.setCurrentPhoto(this._currentPhoto - 1);
         break;
-      case key.RIGHT :
+      case Key.RIGHT :
         this.setCurrentPhoto(this._currentPhoto + 1);
         break;
-      case key.ESC :
+      case Key.ESC :
         this.hide();
         break;
     }
@@ -155,7 +155,7 @@
   /**
    * Устанавливает номер текущей фотографии. Отрисовывает галерею в соответствии
    * с индексом фотографии
-   * @param {number} index
+   * @param {number} index - индекс текущей фотографии
    */
   Gallery.prototype.setCurrentPhoto = function(index) {
     index = clamp(index, 0, this._photos.length - 1);

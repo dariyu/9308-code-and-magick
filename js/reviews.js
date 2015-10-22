@@ -60,8 +60,8 @@
 
   /**
    * Постранично отрисовывает отзывы на странице
-   * @param {number} pageNumber
-   * @param {boolean} replace
+   * @param {number} pageNumber - Номер текущей страницы с отзывами
+   * @param {boolean} replace - аргумент, отвечающий за очистку контейнера
    */
   function renderReviews(pageNumber, replace) {
     var reviewsFragment = document.createDocumentFragment();
@@ -102,7 +102,7 @@
    * Фильтрация и сортировка отзывов. Принимает на вход список отзывов и ID фильтра
    * Возвращает отфильтрованный и отсортированный список, и записывает фильтр
    * в localStorage
-   * @param {string} filterID
+   * @param {string} filterID - ID фильтра, по которому производился клик
    * @return {Array}
    */
   function filterReviews(filterID) {
@@ -168,7 +168,7 @@
 
   /**
    * Вызывает функцию фильтрации отзывов с переданным filterID из обраотчика события клика
-   * @param {string} filterID
+   * @param {string} filterID - ID фильтра, по которому производился клик
    */
   function setActiveFilter(filterID) {
     filterReviews(filterID);

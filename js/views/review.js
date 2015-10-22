@@ -8,7 +8,7 @@
    * Список констант классов для рейтингов
    * @enum {string}
    */
-  var ratingClass = {
+  var RatingClass = {
     '1': 'review-rating-one',
     '2': 'review-rating-two',
     '3': 'review-rating-three',
@@ -46,7 +46,7 @@
     render: function() {
       this.el.appendChild(reviewsTemplate.content.children[0].cloneNode(true));
 
-      this.el.querySelector('.review-rating').classList.add(ratingClass[this.model.get('rating')]);
+      this.el.querySelector('.review-rating').classList.add(RatingClass[this.model.get('rating')]);
       this.el.querySelector('.review-text').textContent = this.model.get('description');
 
       if (this.model.get('author').picture) {
@@ -62,7 +62,7 @@
     /**
      * Обработчик события клика по "Да" или "Нет", вызывающего
      * изменение модели
-     * @param {Event} evt
+     * @param {Event} evt - событие клика
      * @private
      */
     _onClick: function(evt) {
@@ -78,7 +78,7 @@
 
     /**
      * Обработчик события загрузки фотографии автора отзыва
-     * @param {Event} evt
+     * @param {Event} evt - событие загрузки фотографии
      * @private
      */
     _onImageLoad: function(evt) {
@@ -93,7 +93,7 @@
      * Обработчик события возникновения ошибки при загрузке
      * фотографии автора - добавление соответствующего класса
      * контейнеру
-     * @param {Event} evt
+     * @param {Event} evt - событие ошибки при загрузке фотографии
      * @private
      */
     _onImageFail: function(evt) {
@@ -105,7 +105,7 @@
 
     /**
      * Удаление обработчиков события с загрузкой фотографии
-     * @param {Event} evt
+     * @param {Image} image - фотография, загруженная или нет
      * @private
      */
     _cleanupImageListeners: function(image) {
