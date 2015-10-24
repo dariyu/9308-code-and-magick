@@ -1,3 +1,5 @@
+/* global Game: true */
+
 'use strict';
 
 (function() {
@@ -14,9 +16,17 @@
   var cloudsContainer = document.querySelector('.header-clouds');
 
   /**
+   * @type {Element}
+   */
+  var headerContainer = document.querySelector('header');
+
+  /**
    * @type {boolean}
    */
   var isCloudsVisible = true;
+
+  var game = new Game(document.querySelector('.demo'));
+  var Verdict = Game.Verdict;
 
   /**
    * Возвращает горизонтальную координату облаков относительно скролла
@@ -31,7 +41,7 @@
    * @return {boolean}
    */
   function isContainerInTheWindow() {
-    return cloudsContainer.getBoundingClientRect().bottom > 0;
+    return headerContainer.getBoundingClientRect().bottom > 0;
   }
 
   /**
@@ -44,14 +54,14 @@
   /**
    * Испускает кастомное событие stopParallax
    */
-  function turnCloudsParallaxOff() {
+  function turnCloudsParallaxOff$PausedGame() {
     window.dispatchEvent(new CustomEvent('stopParallax'));
   }
 
   /**
    * Испускает кастомное событие startParallax
    */
-  function showClouds() {
+  function showClouds$ContinueGame() {
     window.dispatchEvent(new CustomEvent('startParallax'));
   }
 
@@ -86,9 +96,9 @@
         isCloudsVisible = isContainerInTheWindow();
 
         if (isCloudsVisible) {
-          showClouds();
+          showClouds$ContinueGame();
         } else {
-          turnCloudsParallaxOff();
+          turnCloudsParallaxOff$PausedGame();
         }
       }, 100);
     });
@@ -101,6 +111,7 @@
   function stopParallaxListener() {
     window.addEventListener('stopParallax', function() {
       window.removeEventListener('scroll', cloudsOffset);
+      game.setGameStatus(Verdict.PAUSE);
     });
   }
 
@@ -111,11 +122,15 @@
   function startParallaxAgain() {
     window.addEventListener('startParallax', function() {
       window.addEventListener('scroll', cloudsOffset);
+      game.setGameStatus(Verdict.CONTINUE);
     });
   }
 
   initScroll();
   stopParallaxListener();
   startParallaxAgain();
+
+  game.initializeLevelAndStart();
+  game.setGameStatus(Verdict.INTRO);
 
 })();

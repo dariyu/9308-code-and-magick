@@ -256,6 +256,7 @@
     this._onKeyDown = this._onKeyDown.bind(this);
     this._onKeyUp = this._onKeyUp.bind(this);
     this._pauseListener = this._pauseListener.bind(this);
+    this._draw = this._draw.bind(this);
   };
 
   Game.prototype = {
@@ -373,22 +374,36 @@
       }
     },
 
+    _draw: function(infoMessage, vert) {
+      this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+      this.ctx.fillRect(240, 100, 290, 135);
+      this.ctx.fillStyle = 'white';
+      this.ctx.fillRect(230, 90, 290, 135);
+      this.ctx.fillStyle = 'black';
+      this.ctx.font = '16px PT Mono';
+      var i = 0;
+      var l = 0;
+      for (i, l; i < infoMessage.length; i++, l = l + 20) {
+        this.ctx.fillText(infoMessage[i], 250, vert + l);
+      }
+    },
+
     /**
      * Отрисовка экрана паузы.
      */
     _drawPauseScreen: function() {
       switch (this.state.currentStatus) {
         case Verdict.WIN:
-          console.log('you have won!');
+          this._draw(['Мы спасли мир!', 'Теперь можно и чайку попить'], 150);
           break;
         case Verdict.FAIL:
-          console.log('you have failed!');
+          this._draw(['Не время спать!', 'Ведь я погиб!'], 150);
           break;
         case Verdict.PAUSE:
-          console.log('game is on pause!');
+          this._draw(['Пора перекусить и', 'зарядить чакры файрболами!'], 150);
           break;
         case Verdict.INTRO:
-          console.log('welcome to the game! Press Space to start');
+          this._draw(['Пора спасать мир!', 'По стрелкам ты можешь', 'меня перемещать, а шифт', 'вынуждает меня применять', 'адские файрболы!'], 120);
           break;
       }
     },
@@ -665,7 +680,4 @@
   window.Game = Game;
   window.Game.Verdict = Verdict;
 
-  var game = new Game(document.querySelector('.demo'));
-  game.initializeLevelAndStart();
-  game.setGameStatus(Verdict.INTRO);
 })();
