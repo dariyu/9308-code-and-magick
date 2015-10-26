@@ -1,4 +1,4 @@
-/* global GalleryPicture: true */
+/* global GalleryPicture: true VideoView: true */
 
 'use strict';
 
@@ -89,15 +89,28 @@
    * Заполняет коллекцию
    */
   Gallery.prototype.setPhotos = function() {
-    var imagesNodes = document.querySelectorAll('.photogallery-image img');
+    var images = document.querySelectorAll('.photogallery-image');
     var imageUrls = [];
-    for (var i = 0; i < imagesNodes.length; i++) {
-      imageUrls.push(imagesNodes[i].src);
+    for (var i = 0; i < images.length; i++) {
+      var videoData = images[i].dataset;
+      var imagesNodes = images[i].querySelector('.photogallery-image img');
+
+      if (videoData['replacementVideo']) {
+        imageUrls.push({
+          url: videoData['replacementVideo'],
+          preview: imagesNodes.src
+        });
+      } else {
+        imageUrls.push({
+          url: imagesNodes.src
+        });
+      }
     }
 
-    this._photos.reset(imageUrls.map(function(photoSrc) {
+    this._photos.reset(imageUrls.map(function(photos) {
       return new Backbone.Model({
-        url: photoSrc
+        url: photos.url,
+        preview: photos.preview
       });
     }));
   };
@@ -171,7 +184,19 @@
 
     this._pictureElement.innerHTML = '';
 
-    var imageElement = new GalleryPicture({ model: this._photos.at(this._currentPhoto) });
+    var imageArray = this._photos.at(this._currentPhoto);
+    var imageElement;
+
+    if (imageArray.get('preview')) {
+      imageElement = new VideoView({
+        model: imageArray
+      });
+    } else {
+      imageElement = new GalleryPicture({
+        model: imageArray
+      });
+    }
+
     imageElement.render();
     this._pictureElement.appendChild(previewNumberContainer);
     this._pictureElement.appendChild(imageElement.el);

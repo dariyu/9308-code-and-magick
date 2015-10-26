@@ -66,8 +66,8 @@
      * @private
      */
     _onClick: function(evt) {
-      var goodReview = this.el.querySelector('span.review-quiz-answer:first-child');
-      var badReview = this.el.querySelector('span.review-quiz-answer:last-child');
+      var goodReview = this.el.querySelector('.review-quiz-answer-yes');
+      var badReview = this.el.querySelector('.review-quiz-answer-no');
       if (evt.target === goodReview) {
         this.model.helpful();
       }
