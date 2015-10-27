@@ -32,6 +32,11 @@
   var galleryContainer = document.querySelector('.photogallery');
 
   /**
+   * @type {NodeList}
+   */
+  var images = document.querySelectorAll('.photogallery-image');
+
+  /**
    * Конструктор галереи на основе коллекции Backbone. Создает свойства,
    * хранящие ссылки на элементы галереи, фиксирует контекст у обработчиков
    * событий
@@ -59,14 +64,20 @@
    * показывает фотографию
    * @param {string} src - ссылка фотографии, по которой был произведен клик
    */
-  Gallery.prototype.show = function(src) {
+  Gallery.prototype.show = function(currentNode) {
     this._element.classList.remove('invisible');
     this._closeButton.addEventListener('click', this._onCloseButtonClick);
     this._leftButton.addEventListener('click', this._onLeftArrowClick);
     this._rightButton.addEventListener('click', this._onRightArrowClick);
     document.body.addEventListener('keydown', this._onDocumentKeyDown);
 
-    this.setCurrentPhoto(this._photos.indexOf(this._photos.findWhere({url: src})));
+    var arrayParentNode = [];
+    for (var i = 0; i < images.length; i++) {
+      arrayParentNode.push(images[i]);
+    }
+
+    this.setCurrentPhoto(arrayParentNode.indexOf(currentNode));
+
   };
 
   /**
@@ -89,15 +100,14 @@
    * Заполняет коллекцию
    */
   Gallery.prototype.setPhotos = function() {
-    var images = document.querySelectorAll('.photogallery-image');
     var imageUrls = [];
     for (var i = 0; i < images.length; i++) {
       var videoData = images[i].dataset;
       var imagesNodes = images[i].querySelector('.photogallery-image img');
 
-      if (videoData['replacementVideo']) {
+      if (videoData.replacementVideo) {
         imageUrls.push({
-          url: videoData['replacementVideo'],
+          url: videoData.replacementVideo,
           preview: imagesNodes.src
         });
       } else {
@@ -211,10 +221,10 @@
   galleryContainer.addEventListener('click', function(evt) {
     if (evt.target.parentNode.classList.contains('photogallery-image')) {
       evt.preventDefault();
-      var currentImage = evt.target.src;
+      var currentNode = evt.target.parentNode;
       var gallery = new Gallery();
       gallery.setPhotos();
-      gallery.show(currentImage);
+      gallery.show(currentNode);
     }
   });
 
