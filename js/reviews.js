@@ -173,8 +173,7 @@
    * в соответствии с ID фильтра в адресной строке
    */
   function parseURL() {
-    var filtersRegExp = new RegExp(/^#filters\/(\S+)$/);
-    var hashArray = location.hash.match(filtersRegExp);
+    var hashArray = location.hash.match(/^#filters\/(\S+)$/);
     var filterId;
     if (hashArray) {
       filterId = hashArray[1];
@@ -192,6 +191,7 @@
     filterReviews(filterID);
     currentPage = 0;
     renderReviews(currentPage, true);
+    document.getElementById(filterID).checked = true;
   }
 
   /**
