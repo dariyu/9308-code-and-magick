@@ -71,10 +71,7 @@
     this._rightButton.addEventListener('click', this._onRightArrowClick);
     document.body.addEventListener('keydown', this._onDocumentKeyDown);
 
-    var arrayParentNode = [];
-    for (var i = 0; i < images.length; i++) {
-      arrayParentNode.push(images[i]);
-    }
+    var arrayParentNode = Array.prototype.slice.call(images);
 
     this.setCurrentPhoto(arrayParentNode.indexOf(currentNode));
 
