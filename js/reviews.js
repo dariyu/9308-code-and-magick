@@ -160,9 +160,9 @@
   }
 
   /**
-   * Обработчик события изменения хэша
+   * Функция, добавляющая обработчик события изменения хэша
    */
-  function onHashChange() {
+  function addHashChangeListener() {
     window.addEventListener('hashchange', function() {
       parseURL();
     });
@@ -173,11 +173,11 @@
    * в соответствии с ID фильтра в адресной строке
    */
   function parseURL() {
-    var regularString = new RegExp(/^#filters\/(\S+)$/);
-    var filterString = location.hash.match(regularString);
+    var filtersRegExp = new RegExp(/^#filters\/(\S+)$/);
+    var hashArray = location.hash.match(filtersRegExp);
     var filterId;
-    if (filterString) {
-      filterId = filterString[1];
+    if (hashArray) {
+      filterId = hashArray[1];
     } else {
       filterId = 'reviews-all';
     }
@@ -221,7 +221,7 @@
     initiallyLoaded = jqXHR.responseJSON;
     initFilters();
     initAddPage();
-    onHashChange();
+    addHashChangeListener();
 
     parseURL();
   }).fail( function() {
