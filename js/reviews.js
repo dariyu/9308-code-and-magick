@@ -16,12 +16,6 @@
   var PAGE_SIZE = 3;
 
   /**
-   * @const
-   * @type {string}
-   */
-  var FILTER_ID = 'filterID';
-
-  /**
    * Контейнер фильтров
    * @type {Element}
    */
@@ -151,7 +145,6 @@
     }
 
     reviewCollection.reset(filteredReviews);
-    localStorage.setItem(FILTER_ID, filterID);
   }
 
   /**
@@ -162,8 +155,33 @@
 
     filtersContainer.addEventListener('click', function(evt) {
       var clickedFilter = evt.target;
-      setActiveFilter(clickedFilter.id);
+      location.hash = 'filters/' + clickedFilter.id;
     });
+  }
+
+  /**
+   * Обработчик события изменения хэша
+   */
+  function onHashChange() {
+    window.addEventListener('hashchange', function() {
+      parseURL();
+    });
+  }
+
+  /**
+   * Обрабатывает хэш адресной строки и запускает фильтрацию,
+   * в соответствии с ID фильтра в адресной строке
+   */
+  function parseURL() {
+    var regularString = new RegExp(/^#filters\/(\S+)$/);
+    var filterString = location.hash.match(regularString);
+    var filterId;
+    if (filterString) {
+      filterId = filterString[1];
+    } else {
+      filterId = 'reviews-all';
+    }
+    setActiveFilter(filterId);
   }
 
   /**
@@ -203,8 +221,9 @@
     initiallyLoaded = jqXHR.responseJSON;
     initFilters();
     initAddPage();
+    onHashChange();
 
-    setActiveFilter(localStorage.getItem(FILTER_ID) || ('reviews-all'));
+    parseURL();
   }).fail( function() {
     showFailure();
   });
