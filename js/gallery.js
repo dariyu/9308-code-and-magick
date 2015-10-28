@@ -63,7 +63,8 @@ define([
   /**
    * Показывает галерею, вешает на кнопки и окно обработчики событий,
    * показывает фотографию
-   * @param {string} src - ссылка фотографии, по которой был произведен клик
+   * @param {Node} currentNode - родитель фотографии, по которой был
+   * совершен клик
    */
   Gallery.prototype.show = function(currentNode) {
     this._element.classList.remove('invisible');
@@ -225,7 +226,4 @@ define([
       gallery.show(currentNode);
     }
   });
-
-  window.Gallery = Gallery;
-
 });
