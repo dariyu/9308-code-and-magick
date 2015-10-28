@@ -1,6 +1,8 @@
 'use strict';
 
-define(function() {
+define([
+  'cookies'
+], function() {
   /**
    * Функция, восставливающая введенные ранее значения
    * в поле "Имя" и значение оценки из cookies

@@ -2,8 +2,9 @@
 
 define([
   'views/photo',
-  'views/video'
-], function(GalleryPicture, VideoView) {
+  'views/video',
+  'backbone'
+], function(GalleryPicture, VideoView, Backbone) {
   /**
    * Список кодов клавиш для обработки
    * клавиатурных событий

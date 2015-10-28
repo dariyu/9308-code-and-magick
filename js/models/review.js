@@ -1,6 +1,8 @@
 'use strict';
 
-define(function() {
+define([
+  'backbone'
+], function(Backbone) {
 
   /**
    * Модель отзыва, наследуемая от Backbone.Model

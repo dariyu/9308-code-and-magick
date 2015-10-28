@@ -1,8 +1,9 @@
 'use strict';
 
 define([
-  'models/review'
-], function(ReviewModel) {
+  'models/review',
+  'backbone'
+], function(ReviewModel, Backbone) {
 
   /**
    * Коллекция отзывов, наследуемая от Backbone.Collection и

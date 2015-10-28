@@ -1,6 +1,8 @@
 'use strict';
 
-define(function() {
+define([
+  'backbone'
+], function(Backbone) {
 
   /**
    * Представление фотографии в галерее, наследуемая
