@@ -1,6 +1,6 @@
 'use strict';
 
-(function() {
+define(function() {
   /**
    * Функция, восставливающая введенные ранее значения
    * в поле "Имя" и значение оценки из cookies
@@ -90,5 +90,5 @@
   });
 
   restoreValueFromCookies(formReview);
-})();
+});
 

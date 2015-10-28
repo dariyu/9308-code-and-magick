@@ -1,6 +1,6 @@
 'use strict';
 
-(function() {
+define(function() {
 
   /**
    * Представление фотографии в галерее, наследуемая
@@ -15,5 +15,5 @@
     }
   });
 
-  window.GalleryPicture = GalleryPicture;
-})();
+  return GalleryPicture;
+});

@@ -1,8 +1,6 @@
-/* global Backbone: true */
-
 'use strict';
 
-(function() {
+define(function() {
 
   /**
    * Список констант классов для рейтингов
@@ -116,5 +114,5 @@
 
   });
 
-  window.ReviewView = ReviewView;
-})();
+  return ReviewView;
+});

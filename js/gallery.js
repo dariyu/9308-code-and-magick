@@ -1,8 +1,9 @@
-/* global GalleryPicture: true VideoView: true */
-
 'use strict';
 
-(function() {
+define([
+  'views/photo',
+  'views/video'
+], function(GalleryPicture, VideoView) {
   /**
    * Список кодов клавиш для обработки
    * клавиатурных событий
@@ -227,4 +228,4 @@
 
   window.Gallery = Gallery;
 
-})();
+});

@@ -1,8 +1,8 @@
-/* global Backbone: true ReviewModel: true */
-
 'use strict';
 
-(function() {
+define([
+  'models/review'
+], function(ReviewModel) {
 
   /**
    * Коллекция отзывов, наследуемая от Backbone.Collection и
@@ -15,6 +15,6 @@
 
   });
 
-  window.ReviewCollection = ReviewCollection;
+  return ReviewCollection;
 
-})();
+});

@@ -1,8 +1,6 @@
-/* global Backbone: true */
-
 'use strict';
 
-(function() {
+define(function() {
 
   /**
    * Модель отзыва, наследуемая от Backbone.Model
@@ -23,6 +21,6 @@
 
   });
 
-  window.ReviewModel = ReviewModel;
+  return ReviewModel;
 
-})();
+});

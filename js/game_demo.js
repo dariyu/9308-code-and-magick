@@ -1,8 +1,8 @@
-/* global Game: true */
-
 'use strict';
 
-(function() {
+define([
+  'game'
+], function(Game) {
   /**
    * @const
    * @type {number}
@@ -25,7 +25,7 @@
    */
   var isCloudsVisible = true;
 
-  var game = new Game(document.querySelector('.demo'));
+  var game = new Game.Game(document.querySelector('.demo'));
   var Verdict = Game.Verdict;
 
   /**
@@ -133,4 +133,4 @@
   game.initializeLevelAndStart();
   game.setGameStatus(Verdict.INTRO);
 
-})();
+});

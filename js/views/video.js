@@ -1,8 +1,6 @@
-/* global Backbone: true */
-
 'use strict';
 
-(function() {
+define(function() {
 
   var VideoView = Backbone.View.extend({
 
@@ -37,6 +35,6 @@
 
   });
 
-  window.VideoView = VideoView;
+  return VideoView;
 
-})();
+});

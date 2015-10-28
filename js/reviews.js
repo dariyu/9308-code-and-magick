@@ -1,8 +1,11 @@
-/* global ReviewCollection: true ReviewView: true */
-
 'use strict';
 
-(function() {
+define([
+
+  'models/reviews',
+  'views/review'
+
+], function(ReviewCollection, ReviewView) {
   /**
    * @const
    * @type {number}
@@ -233,4 +236,4 @@
    */
   reviewsFilter.classList.remove('invisible');
 
-})();
+});
